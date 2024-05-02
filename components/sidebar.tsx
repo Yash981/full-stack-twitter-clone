@@ -90,7 +90,7 @@ const SideBar = (props: Props) => {
                         <h1 className='md:block hidden '>{session.user?.name}</h1>
                         <SignOut />
                     </div>
-                </div>) : (<div className=''>
+                </div>) : (<div className='lg:hidden block'>
                     <SignIn text={''}/>
                 </div>)}
         </div>
