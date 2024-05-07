@@ -22,11 +22,13 @@ export const getAllUsersTweets = async () => {
         },
         include: {
             author: true,
-            likes: true
+            likes: true,
+            BookMarks: true
 
         }
         
     })
+    // console.log(tweets)
     return tweets
 }
 
@@ -37,7 +39,8 @@ export const getAllTweetsByUserId = async (userId: string) => {
         },
         include: {
             author: true,
-            likes: true
+            likes: true,
+            BookMarks: true
         },
         orderBy: {
             createdAt: 'desc'

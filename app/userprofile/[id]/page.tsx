@@ -24,17 +24,17 @@ const UserProfile = async () => {
     
     const headerList = headers()
     const pathname = headerList.get("x-pathname")
-   
-    const posts = await useGetAllTweetsByUser(pathname?.slice(1) as string)
-    const followers: Followers[] = await useGetFollowersOfUser(pathname?.slice(1) as string)
-    const followings = await useGetFollowingsOfUser(pathname?.slice(1) as string)
+//    console.log(pathname?.split('/'))
+    const posts = await useGetAllTweetsByUser(pathname?.split('/')[2] as string)
+    const followers: Followers[] = await useGetFollowersOfUser(pathname?.split('/')[2] as string)
+    const followings = await useGetFollowingsOfUser(pathname?.split('/')[2] as string)
     const CurrentuserId = await useCurrentUser()
     
     return (
         <>
-            <div className="grid grid-cols-12 h-screen w-screen px-4">
-                <SideBar />
-                <div className="lg:col-span-6 border-l-2 border-r-2 border-gray-600 h-screen overflow-y-scroll  [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] md:col-span-9  max-sm:col-span-10 sm:col-span-10">
+            {/* <div className="grid grid-cols-12 h-screen w-screen px-4"> */}
+                {/* <SideBar /> */}
+                {/* <div className="lg:col-span-6 border-l-2 border-r-2 border-gray-600 h-screen overflow-y-scroll  [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] md:col-span-9  max-sm:col-span-10 sm:col-span-10"> */}
                     <nav className="p-4 pt-2 flex h-16 bg-slate-600 justify-start items-center">
                         <Link
                             href="/"
@@ -78,16 +78,16 @@ const UserProfile = async () => {
                     </div>
                     <div>
                         {posts && posts.map((post, idx2) => (
-                            <FeedCard key={idx2} name={post.author?.name || undefined} content={post.content} image={post.author.image || undefined} id={post.author?.id!} likes={post.likeCount} tweetId={post.id} hasLiked={post.likes.some((like) => like.userId === CurrentuserId)}/>
+                            <FeedCard key={idx2} name={post.author?.name || undefined} content={post.content} image={post.author.image || undefined} id={post.author?.id!} likes={post.likeCount} tweetId={post.id} hasLiked={post.likes.some((like) => like.userId === CurrentuserId)} BookMarkcount={post.BookMarkCount} hasBookmarked={post.BookMarks.some((bookmark) => bookmark.userId === CurrentuserId)}/>
                         ))}
                     </div>
-                </div>
-                <div className="lg:col-span-3 hidden lg:block">
-                    <UserRecommendation />
-                </div>
-            </div>
+                {/* </div> */}
+                {/* // <div className="lg:col-span-3 hidden lg:block"> */}
+                    {/* <UserRecommendation /> */}
+                {/* // </div> */}
+            {/* // </div> */}
         </>
     );
 };
 
-export default UserProfile
+export default UserProfile;

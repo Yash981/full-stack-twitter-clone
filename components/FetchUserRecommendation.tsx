@@ -3,8 +3,6 @@ import { getUserById } from "@/data/user";
 import { useCurrentUser } from "@/hooks/customHooks";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
-import FollowUnfollowBtn from "./followUnfollowBtn";
-import { Followers } from "@/app/[id]/page"
 
 
 export default async function FetchUserRecommendation() {
@@ -36,10 +34,9 @@ export default async function FetchUserRecommendation() {
                         <h1 className="text-md font-semibold">{user?.name}</h1>
                         </div>
 
-                        <Link href={`/${user?.id}`}>
+                        <Link href={`/userprofile/${user?.id}`}>
                             <button className=" text-black font-semibold rounded-full px-5 py-2  bg-white ">View</button>
                         </Link>
-                        {/* <FollowUnfollowBtn  followers={} pathname={user?.id as string} currentUser={userId as string}/> */}
                     </div>
                 ))}
             </div>

@@ -11,6 +11,7 @@ import FeedCard from "../feedcard";
 import { Like } from "@prisma/client";
 import { UserlikeAction } from "@/actions/userlike.action";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 
 export default function TwitterLayout() {
@@ -20,15 +21,17 @@ export default function TwitterLayout() {
     const [createTweet, setCreateTweet] = useState<string | "">('');
     const { data: session } = useSession();
     const router = useRouter()
-    // const [liked, setLiked] = useState< {} | null>({});
 
     useEffect(() => {
         const fetchTweets = async () => {
             try {
                 setLoading(true);
                 const posts = await fetchAllposts();
+                
+                // const tweetsss = posts.map((post: Post) => {
+                //     return post
                 const tweetsss = posts.map((post: Post) => {
-                    return post
+                    return { ...post, key: post.id };
                 }) as Post[];
                 setTweets(tweetsss);
             } catch (error) {
@@ -76,14 +79,19 @@ export default function TwitterLayout() {
                 updatedAt: new Date(),
                 likes: [],
                 likeCount:0, 
+                BookMarks: [],
+                BookMarkCount: 0
             };
             setTweets(prevTweets => [newPostObject, ...prevTweets]);
             setCreateTweet('');
+            router.refresh()
+            toast.success('Tweet created successfully')
         } catch (error) {
             console.error('Error creating tweet:', error);
+            toast.error('Error creating tweet')
+        }finally{
         }
     };
-    // console.log(tweets && tweets[4])
     return (
         <>
             {session?.user &&
@@ -114,7 +122,7 @@ export default function TwitterLayout() {
             {tweets && tweets.map((tweet,idx) => {
                 return (
                     <>
-                        <FeedCard key={idx} image={tweet.author?.image} content={tweet.content} name={tweet.author?.name} id={tweet.author?.id!} likes={tweet.likeCount} tweetId={tweet.id} hasLiked={tweet.likes && tweet.likes.some((like)=>like.userId === session?.user?.id)} />
+                        <FeedCard key={tweet.id} image={tweet.author?.image} content={tweet.content} name={tweet.author?.name} id={tweet.author?.id!} likes={tweet.likeCount} tweetId={tweet.id} hasLiked={tweet.likes && tweet.likes.some((like)=>like.userId === session?.user?.id)} BookMarkcount={tweet.BookMarkCount} hasBookmarked={tweet.BookMarks && tweet.BookMarks.some((bookmark)=>bookmark.userId === session?.user?.id)}/>
                     </>
                 )
             })}

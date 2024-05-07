@@ -25,6 +25,7 @@ model User {
   follower      Follows[] @relation("follower")
   following     Follows[] @relation("following")
   Like          Like[]
+  Bookmarks      BookMarks[]
 }
 
 model Account {
@@ -57,6 +58,8 @@ model Post {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  BookMarks BookMarks[]
+  BookMarkCount Int  @default(0)
 }
 
 model Follows {
@@ -73,6 +76,15 @@ model Like {
   id     String @id @default(cuid())
   post   Post   @relation(fields: [postId], references: [id])
   postId String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@unique([postId, userId])
+}
+model BookMarks {
+  id     String @id @default(cuid())
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String 
   user   User   @relation(fields: [userId], references: [id])
   userId String
 

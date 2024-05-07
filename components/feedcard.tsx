@@ -4,10 +4,14 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 import { BiMessageRounded, BiRepost } from 'react-icons/bi'
 import { IoMdHeartEmpty } from 'react-icons/io'
-import { IoBookmarkOutline, IoHeart } from 'react-icons/io5'
+import { IoBookmarkOutline, IoBookmarkSharp, IoHeart } from 'react-icons/io5'
 import { RiShare2Line } from 'react-icons/ri'
 import { UserlikeAction } from '@/actions/userlike.action'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
+// import { BookMarkPost } from './BookMarkThePost'
+import { AddToBookmark } from '@/actions/addToBookmark.action'
+import BookMarkPost from './BookMarkThePost'
 
 export type Props = {
     name?: string
@@ -17,57 +21,53 @@ export type Props = {
     likes: number
     tweetId: string
     hasLiked: boolean
+    BookMarkcount: number
+    hasBookmarked: boolean
 }
 
-const FeedCard = ({ name, content, image, id, likes, tweetId,hasLiked }: Props) => {
+const FeedCard = ({ name, content, image, id, likes, tweetId, hasLiked,BookMarkcount,hasBookmarked }: Props) => {
+    const { data: session } = useSession()
     const router = useRouter()
     const [liked, setLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(likes);
-    // if(hasLiked) setLiked(true)
-    // console.log(hasLiked)
-    // useEffect(() => {
-    //     // Function to check if the user has liked the post
-    //     const checkUserLikedPost = async () => {
-    //         try {
-    //             // Call UserlikeAction to check if the current user has liked the post
-    //             const result = await UserlikeAction(tweetId,'useEffect');
-    //             // console.log(result.userId,id)
-    //             if (result && result.userId === id && !result.hasOwnProperty('likeCount') && result.postId === tweetId) {
-    //                 // If the current user has liked the post, set liked to true
-    //                 setLiked(true);
-    //                 setLikeCount(likes);
-    //             }
-    //         } catch (error) {
-    //             console.error('Error checking if the post is liked:', error);
-    //         }
-    //     };
-
-    //     // Call the function to check if the user has liked the post when the component mounts
-    //     checkUserLikedPost();
-    // }, [id, likes, tweetId]);
-
+    const [isBookmarked, setIsBookmarked] = useState(false);
+    const [Bookmarkcounter, setBookmarkcounter] = useState(BookMarkcount);
+    // console.log(BookMarkcount, 'BookMarkcount')
     const handleLike = async () => {
-        // Perform like action
         try {
-            // Call UserLikeAction with tweetId
-            const result = await UserlikeAction(tweetId,'onClick');
- 
-            //@ts-ignore
+            const result = await UserlikeAction(tweetId, 'onClick');
+
             if (result && !result.hasOwnProperty('likeCount') && result.postId === tweetId) {
-                // If the post was successfully liked
                 setLiked(true);
                 setLikeCount(likeCount + 1);
             } else {
-                // If the post was successfully unliked
                 setLiked(false);
                 setLikeCount(likeCount - 1);
             }
         } catch (error) {
             console.error('Error liking tweet:', error);
-        } finally{
+        } finally {
             router.refresh()
         }
     };
+
+    // const handleBookMark = async () => {
+    //     try {
+    //         const res = await AddToBookmark(tweetId);
+    //         if (res?.success) {
+    //             setIsBookmarked(true);
+    //         } else {
+    //             setIsBookmarked(false);
+    //         }
+    //     }
+    //     catch (error) {
+    //         console.log(error, 'errrr')
+    //     }
+    // }
+    const handleBookmarkChange = (bookmarked: boolean) => {
+        setBookmarkcounter(bookmarked ? Bookmarkcounter + 1 : Bookmarkcounter - 1);
+        setIsBookmarked(bookmarked);
+      };
 
     return (
         <div className='border-b  border-gray-600 p-4 hover:bg-slate-800 transition-all cursor-pointer'>
@@ -83,7 +83,7 @@ const FeedCard = ({ name, content, image, id, likes, tweetId,hasLiked }: Props) 
 
                 </div>
                 <div className="col-span-11 ">
-                    <Link href={`/${id}`}>
+                    <Link href={`/userprofile/${session === null ? undefined : id}`}>
                         <h5 className='transition-all hover:text-[#1d9bf0]'>{name}</h5>
                     </Link>
                     <p className='break-words'>{content}</p>
@@ -100,10 +100,13 @@ const FeedCard = ({ name, content, image, id, likes, tweetId,hasLiked }: Props) 
                                 {hasLiked || liked ? <IoHeart className="liked text-red-500 " /> : <IoMdHeartEmpty />}
                                 <span>{likeCount < 0 ? 0 : likeCount}</span>
                             </button>
-                            
+
                         </div>
                         <div>
-                            <IoBookmarkOutline />
+                            {/* <button className="handle-bookmark flex gap-2 items-center" onClick={handleBookMark}>
+                                {isBookmarked ? <IoBookmarkSharp /> : <IoBookmarkOutline />}
+                            </button> */}
+                            <BookMarkPost tweetId={tweetId} isBookmarked={isBookmarked} onBookmarkChange={handleBookmarkChange}  bookmarkcounter={Bookmarkcounter} hasBookmarked={hasBookmarked}/>
                         </div>
                         <div className="">
                             <RiShare2Line />

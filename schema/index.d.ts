@@ -1,4 +1,4 @@
-import { Like } from "@prisma/client";
+import { BookMarks, Like } from "@prisma/client";
 
 export interface Post {
   id: string;
@@ -10,6 +10,8 @@ export interface Post {
   updatedAt: Date;
   likes: Like[];
   likeCount: number;
+  BookMarks:  BookMarks[]
+  BookMarkCount: number;
 }
 
 export interface CreateTweetData {

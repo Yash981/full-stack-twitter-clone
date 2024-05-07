@@ -1,3 +1,4 @@
+import { AddToBookmark } from "@/actions/addToBookmark.action";
 import { fetchAllposts } from "@/actions/fetchAllposts";
 import { fetchUserPost } from "@/actions/fetchUserPosts"
 import { UserlikeAction } from "@/actions/userlike.action";
@@ -56,3 +57,7 @@ export const useCurrentUser = async () => {
 //     const likepost = await UserlikeAction(tweetId)
 //     return likepost
 // }
+
+export const useBookMarkPost = async (tweetId: string) => {
+    const bookmarking = await AddToBookmark(tweetId)
+}

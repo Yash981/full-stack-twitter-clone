@@ -10,8 +10,8 @@ import { SignOut } from './sign-out';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { Link } from 'next-view-transitions';
-import { FcGoogle } from 'react-icons/fc';
 import { SignIn } from './sign-in';
+import { toast } from 'sonner';
 
 
 type Props = {}
@@ -25,7 +25,6 @@ interface SidebarOption {
 
 const SideBar = (props: Props) => {
     const { data: session } = useSession();
-
     const SidebarOptions: SidebarOption[] = useMemo(() => [
         {
             title: "Home",
@@ -50,14 +49,15 @@ const SideBar = (props: Props) => {
         {
             title: "Bookmarks",
             icon: <IoBookmarkSharp />,
-            link: '/'
+            link: `/bookmarks/${session?.user?.id}`
         },
         {
             title: "Profile",
             icon: <CiUser />,
-            link: `/${session?.user?.id}`
+            link:`/userprofile/${session?.user?.id}`
         }
-    ], [session?.user?.id])
+    ], [session])
+    
     return (
         <div className='md:col-span-3 pt-8 md:px-4  lg:pl-16 flex flex-col justify-between  pb-10 items-center col-span-2'>
             <div className="flex justify-center flex-col items-center ">
@@ -68,7 +68,7 @@ const SideBar = (props: Props) => {
                     <ul className='flex flex-col gap-4  w-fit '>
                         {
                             SidebarOptions.map((item, index) => (
-                                <Link href={item.link!} key={index} className='flex md:justify-start items-center gap-3 hover:bg-slate-800 rounded-full px-4 py-2 transition-all justify-center'>
+                                <Link href={item.link!} key={index} className='flex md:justify-start items-center gap-3 hover:bg-slate-800 rounded-full px-4 py-2 transition-all justify-center' >
                                     <span>{item.icon}</span>
                                     <span className='md:block hidden'>{item.title}</span>
                                 </Link>

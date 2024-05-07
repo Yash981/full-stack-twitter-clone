@@ -3,8 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
-import { fetchAllposts } from "@/actions/fetchAllposts";
 import { ViewTransitions } from "next-view-transitions";
+import { Toaster } from 'sonner';
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +26,10 @@ export default async function RootLayout({
     <SessionProvider session={session}>
       <ViewTransitions>
         <html lang="en">
-          <body className={inter.className}>{children}</body>
+          <body className={inter.className}>
+            {children}
+            <Toaster position="top-center" richColors />
+            </body>
         </html>
       </ViewTransitions>
     </SessionProvider>
