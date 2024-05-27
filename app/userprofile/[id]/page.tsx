@@ -78,7 +78,7 @@ const UserProfile = async () => {
                     </div>
                     <div>
                         {posts && posts.map((post, idx2) => (
-                            <FeedCard key={idx2} name={post.author?.name || undefined} content={post.content} image={post.author.image || undefined} id={post.author?.id!} likes={post.likeCount} tweetId={post.id} hasLiked={post.likes.some((like) => like.userId === CurrentuserId)} BookMarkcount={post.BookMarkCount} hasBookmarked={post.BookMarks.some((bookmark) => bookmark.userId === CurrentuserId)}/>
+                            <FeedCard key={idx2} name={post.author?.name || undefined} content={post.content} image={post.author.image || undefined} id={post.author?.id!} likes={post.likeCount} tweetId={post.id} hasLiked={post.likes.some((like) => like.userId === CurrentuserId)} BookMarkcount={post.BookMarkCount} hasBookmarked={post.BookMarks.some((bookmark) => bookmark.userId === CurrentuserId)} imageUrl={post && post?.ImageURL}/>
                         ))}
                     </div>
                 {/* </div> */}

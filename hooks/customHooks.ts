@@ -39,25 +39,6 @@ export const useCurrentUser = async () => {
     return session?.user?.id
 }
 
-
-// export const useFollowUserAction = async (to: string) => {
-//     const followUser = await followUserAction(to)
-//     return followUser
-// }
-
-// export const useUnFollowUserAction = async (to: string) => {
-//     const unfollowUser = await unfollowUserAction(to)
-//     return unfollowUser
-// }
-// export const useUserUnLikeAction = async (tweetId: string) => {
-//     const userUnLikedPost = await UserUnlikeAction(tweetId)
-//     return userUnLikedPost
-// }
-// export const useLikeAction = async (tweetId: string) => {
-//     const likepost = await UserlikeAction(tweetId)
-//     return likepost
-// }
-
 export const useBookMarkPost = async (tweetId: string) => {
     const bookmarking = await AddToBookmark(tweetId)
 }

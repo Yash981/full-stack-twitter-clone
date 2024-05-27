@@ -23,16 +23,16 @@ export type Props = {
     hasLiked: boolean
     BookMarkcount: number
     hasBookmarked: boolean
+    imageUrl: string | null 
 }
 
-const FeedCard = ({ name, content, image, id, likes, tweetId, hasLiked,BookMarkcount,hasBookmarked }: Props) => {
+const FeedCard = ({ name, content, image, id, likes, tweetId, hasLiked,BookMarkcount,hasBookmarked, imageUrl }: Props) => {
     const { data: session } = useSession()
     const router = useRouter()
     const [liked, setLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(likes);
     const [isBookmarked, setIsBookmarked] = useState(false);
     const [Bookmarkcounter, setBookmarkcounter] = useState(BookMarkcount);
-    // console.log(BookMarkcount, 'BookMarkcount')
     const handleLike = async () => {
         try {
             const result = await UserlikeAction(tweetId, 'onClick');
@@ -51,19 +51,6 @@ const FeedCard = ({ name, content, image, id, likes, tweetId, hasLiked,BookMarkc
         }
     };
 
-    // const handleBookMark = async () => {
-    //     try {
-    //         const res = await AddToBookmark(tweetId);
-    //         if (res?.success) {
-    //             setIsBookmarked(true);
-    //         } else {
-    //             setIsBookmarked(false);
-    //         }
-    //     }
-    //     catch (error) {
-    //         console.log(error, 'errrr')
-    //     }
-    // }
     const handleBookmarkChange = (bookmarked: boolean) => {
         setBookmarkcounter(bookmarked ? Bookmarkcounter + 1 : Bookmarkcounter - 1);
         setIsBookmarked(bookmarked);
@@ -87,6 +74,7 @@ const FeedCard = ({ name, content, image, id, likes, tweetId, hasLiked,BookMarkc
                         <h5 className='transition-all hover:text-[#1d9bf0]'>{name}</h5>
                     </Link>
                     <p className='break-words'>{content}</p>
+                    {imageUrl && <Image src={imageUrl} width={200} height={200} alt={content} />}
 
                     <div className=' flex w-full justify-between mt-2 items-center text-xl px-4'>
                         <div>

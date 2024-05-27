@@ -18,7 +18,7 @@ const UserBookMarks = async ({ params }: { params: { id: string } }) => {
             {params.id !== undefined && bookmarks && bookmarks.map((bookmark)=>{
                 return (
                     <>
-                    <FeedCard key={bookmark.id} image={bookmark.post.author?.image!} content={bookmark.post.content} name={bookmark?.post.author?.name!} id={bookmark.post.authorId} likes={bookmark.post.likeCount} tweetId={bookmark.postId} hasLiked={bookmark.post.likes && bookmark.post.likes.some((like)=>like.userId === params.id)} BookMarkcount={bookmark.post.BookMarkCount} hasBookmarked={bookmark.post.BookMarks && bookmark.post.BookMarks.some((bookmark)=>bookmark.userId === params.id)}></FeedCard>
+                    <FeedCard key={bookmark.id} image={bookmark.post.author?.image!} content={bookmark.post.content} name={bookmark?.post.author?.name!} id={bookmark.post.authorId} likes={bookmark.post.likeCount} tweetId={bookmark.postId} hasLiked={bookmark.post.likes && bookmark.post.likes.some((like)=>like.userId === params.id)} BookMarkcount={bookmark.post.BookMarkCount} hasBookmarked={bookmark.post.BookMarks && bookmark.post.BookMarks.some((bookmark)=>bookmark.userId === params.id)} imageUrl={bookmark.post.ImageURL}></FeedCard>
                     </>
                 )
             })}
